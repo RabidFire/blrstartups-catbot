@@ -1,1 +1,11 @@
-p Wat
+extends layout
+
+block content  
+  h1=title
+  div
+    input(id="event_btn", type="button", name="event_btn", value="Click me")
+  div#login
+    p Login to facebook
+    input(id='login_btn', type='button', name='login_btn', value='Login')
+  | <fb:login-button show-faces="true" width="200" max-rows="1" scope="publish_actions"></fb:login-button>
+

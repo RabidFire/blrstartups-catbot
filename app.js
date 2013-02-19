@@ -20,6 +20,8 @@ app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use('/js', express.static(__dirname + '/js'));
+  app.use('/static', express.static(__dirname + '/static'));
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());

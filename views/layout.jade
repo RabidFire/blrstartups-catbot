@@ -1,7 +1,54 @@
-doctype 5
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    // link(rel='stylesheet', href='/css/style.css')
+    //script(src='/js/jquery-1.9.1.min.js')
+    //script(src='/js/blrs.js')
   body
+    div#fb-root
+    script   
+      window.fbAsyncInit = function() {
+        alert('async init');
+        FB.init({
+          appId : 272727482828413,
+          status : true,
+          cookie : true,
+          xfbml : true
+        });
+
+        FB.getLoginStatus(function(response) {
+          alert('login status');
+          if(response.status == 'connected') {
+            // connected
+            //blrs.connected(response);
+          } else if(response.status == 'not_authorized') {
+            // not authorized
+            // create a login button
+            $("#login_btn").show();
+            $("#login_btn").click(function() {
+             alert('hello');
+             FB.login(function(response) {
+               if(response.authResponse) {
+                // connected
+                FB.api('/me', function(response) {
+                  //console.log('It's working..');
+                  alert('working');
+                });
+               } else {
+                // not connected
+               }
+             });
+            });
+          } else {
+            // not logged in
+          }
+        });
+      };
+
+      (function(d){
+        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "http://connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+      }(document));
     block content
