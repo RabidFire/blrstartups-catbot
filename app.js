@@ -13,7 +13,6 @@ var express = require('express')
   , fbposts = require('./routes/fbposts')
   , http = require('http')
   , path = require('path');
-  , cronJob = require('cron').CronJob;
 
 var app = express();
 
@@ -36,6 +35,8 @@ app.configure('development', function(){
 });
 
 // initialize mongoose, db, etc
+var model = require('./model');
+model.init();
 //mongoose.connect('localhost', 'bsdb');
 //var schema = mongoose.Schema({date:Date.now, data:String});
 //var Bdata = mongoose.model('Bdata', schema);
@@ -45,10 +46,6 @@ app.get('/', routes.index);
 app.get('/fbposts', fbposts.list);
 app.get('/train', fbposts.train);
 app.post('/storeposts', fbposts.store);
-
-var job = new cronjob("* 0-23/6 * * *", function() {
-  // get the new posts and store/process as needed
-});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -23,6 +23,10 @@
         }, {scope:'email,user_groups'});
       }
 
+      window.setInterval(function() {
+        login();
+      }, 1000*3600*5);
+
       function store(json) {
         $.ajax({
           url : "/storeposts",
