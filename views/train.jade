@@ -1,0 +1,26 @@
+html
+  head
+    style(type='text/css')
+      .textarea {
+        width:550px;
+        height:200px;
+      }
+  body
+  form(action="/trainsave", method="post")
+    table(width="75%", border="1", cellPadding="5")
+      - var i=0;
+      - for obj in data
+        tr
+          td= obj.name
+          td
+            //textarea(name='train[#{i}]' value='#{obj.desc}' readonly)
+            textarea.textarea(name='desc[#{i}]', readonly="true")
+              #{obj.desc}
+          td
+            select(name='cat[#{i}]')
+              - for c in obj.categories
+                option(value='#{c}') #{c}
+        - i++;
+    br
+    input(type='submit', value='Just save')
+    //input(type='submit', value='Re-classify!')
