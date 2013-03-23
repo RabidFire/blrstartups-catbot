@@ -3,10 +3,6 @@
  * Module dependencies.
  */
 
-var url = "https://graph.facebook.com";
-var groupid = "220266924662120";
-var access_token = "AAACEdEose0cBAFWf4EXZBqf1XjZBH3NwC8aPwZBHPPHXUloqiId1tYjp1Xe2VLmILtQaZCjb5CYEOUS1WbT6ag5VZBcZCMhr2hQ3dUzGAp8AZDZD";
-
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
@@ -37,15 +33,13 @@ app.configure('development', function(){
 // initialize mongoose, db, etc
 var model = require('./model');
 model.init();
-//mongoose.connect('localhost', 'bsdb');
-//var schema = mongoose.Schema({date:Date.now, data:String});
-//var Bdata = mongoose.model('Bdata', schema);
 
 app.get('/', routes.index);
 //app.get('/users', user.list);
 app.get('/fbposts', fbposts.list);
 app.get('/train', fbposts.train);
 app.post('/storeposts', fbposts.store);
+app.post('/trainsave', fbposts.trainsave);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
