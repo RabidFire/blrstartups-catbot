@@ -1,5 +1,11 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+html
+  body
+    block content
+      h1= title
+      p Welcome to #{title}
+        div
+          a(href="/fbposts") fbposts
+        div
+          a(href="/train") train
+        div
+          a(href="/forum") forum

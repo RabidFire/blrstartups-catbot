@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , fbposts = require('./routes/fbposts')
+  , forum = require('./routes/forum')
   , http = require('http')
   , path = require('path');
 
@@ -40,6 +41,7 @@ app.get('/fbposts', fbposts.list);
 app.get('/train', fbposts.train);
 app.post('/storeposts', fbposts.store);
 app.post('/trainsave', fbposts.trainsave);
+app.get('/forum*', forum.show);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

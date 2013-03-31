@@ -13,9 +13,7 @@ html
         tr
           td= obj.name
           td
-            //textarea(name='train[#{i}]' value='#{obj.desc}' readonly)
-            textarea.textarea(name='desc[#{i}]', readonly="true")
-              #{obj.desc}
+            textarea.textarea(name='desc[#{i}]', readonly="true")= obj.desc
           td
             select(name='cat[#{i}]')
               - for c in obj.categories
@@ -23,4 +21,3 @@ html
         - i++;
     br
     input(type='submit', value='Just save')
-    //input(type='submit', value='Re-classify!')

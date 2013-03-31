@@ -1,0 +1,11 @@
+html
+  body
+    div#container
+      div#leftcolumn
+        ul
+          - for c in data.categories
+            li
+              a= c
+      div#rightcolumn
+        - for post in data.posts
+          div #{post}
