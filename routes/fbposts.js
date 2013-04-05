@@ -96,10 +96,18 @@ exports.trainsave = function(req, res) {
         }
       });
     }
+  }
 
-    // update each category count
-    var query = model.catbagwords.findOne({category:cat});
-    query.exec(function(err, doc) {
+  var newdocs=[];
+  var query = model.catbagwords.find({});
+  var promise = query.exec(function(err, docs) {
+    for(var i=0; i<docs.length; i++) {
+      newdocs[docs[i].category] = docs[i];
+    }
+    
+    var doc;
+    categories.forEach(function(cat) {
+      doc = newdocs[cat];
       doc.count++;
       for(var word in genbagofwords) {
         if(doc.bagofwords[word] == "" || doc.bagofwords[word] == undefined) {
@@ -108,37 +116,20 @@ exports.trainsave = function(req, res) {
           doc.bagofwords[word]++;
         }
       }
-      model.catbagwords.update(
-        {category:doc.category},
-        {category:doc.category, bagofwords:doc.bagofwords, count:doc.count},
-        {upsert:true},
-        function(err, docs) {
-          if(err) {
-            console.log("ERR[catbagwords] : Error in update. "+ err);
-          }
-        }
-      );
+      newdocs[cat] = doc;
     });
-    
-    /*
-    model.catbagwords.find({category:categories[i]}, function(err, docs) {
-      var cbw;
-      if(docs.length == 0) { // if its a new category
-      } else { // update word count
-        cbw = docs[0];
-        cbw.count++;
-        for(var word in genbagofwords) {
-          if(cbw.bagofwords[word] == "" || cbw.bagofwords[word] == undefined) {
-            cbw.bagofwords[word] = 1;
-          } else {
-            cbw.bagofwords[word]++;
-          }
-        }
-      }
-    });
-    */
-  }
-
+  });
+  promise.addCallback(function() {
+    var db = mongoose.createConnection('localhost', 'bdb');
+    var m = db.model('catbagwords');
+    m.findOneAndUpdate({"category":"officespace"}, {"category":"asdasd"});
+    /*for(var i=0; i<categories.length; i++) {
+      var c = categories[i];
+      m.update({"category":c}, {"category":"asdasd"});
+    }*/
+  });
+  
+  
   mongoose.disconnect();
 
   res.send('Word counts updated.');

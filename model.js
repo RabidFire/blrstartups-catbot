@@ -16,15 +16,13 @@ module.exports.init = function() {
 
   schema = new mongoose.Schema({category:String, bagofwords:Object, count:Number});
   var catbagwords = mongoose.model('catbagwords', schema);
-  catbagwords.find({}).remove();
-  for(var i=0; i<utils.categories.length; i++) {
-    var cbw = new catbagwords({category:utils.categories[i], bagofwords:{'default':'default'}, count:0});
-    cbw.save(function(err) {
-      if(err) {
-        console.log("ERR[model] : Didn't insert new cbw. " + err);
-      }
-    });
-  }
+  utils.categories.forEach(function(cat) {
+    catbagwords.findOneAndUpdate(
+        {"category":cat},
+        {"category":cat, "bagofwords":{'default':'default'},count:0},
+        {upsert:true}
+    );
+  });
   exports.catbagwords = catbagwords;
 
   schema = new mongoose.Schema({type:String, allwords:Object});
