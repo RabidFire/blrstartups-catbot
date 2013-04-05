@@ -1,12 +1,17 @@
 {
-  "name": "application-name",
+  "name": "blrstartups-catbot",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app"
   },
   "dependencies": {
+    "config": "*",
+    "cron": "*",
     "express": "3.1.0",
-    "jade": "*"
+    "jade": "*",
+    "mongoose": "*",
+    "snowball": "*",
+    "stopwords": "*"
   }
 }

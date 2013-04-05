@@ -1,53 +1,52 @@
 <html>
 <head>
-  <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="/javascripts/lib/jquery-1.9.1.min.js"></script>
   <script>
-    function login() {
-        FB.login(function(response) {
-          if(response.authResponse) {
-            // connected
-            var accessToken = response.authResponse.accessToken;
-			$("#token").append(accessToken);
-			// do the jquery ajax thing
-			$.ajax({
-			  url : "https://graph.facebook.com/220266924662120/feed?access_token="+accessToken,
-			  success : function(data) {
-				var json = JSON.parse(data);
-                consoleit("JSON received. Data length : " + json.data.length);
-                store(json);
-			  }
-			});
-		  } else {
-			// not connected 
-		  }
-        }, {scope:'email,user_groups'});
-      }
-
-      window.setInterval(function() {
-        login();
-      }, 1000*3600*5);
-
-      function store(json) {
-        $.ajax({
-          url : "/storeposts",
-          contentType : "application/json; charset=utf-8",
-          data: JSON.stringify(json),
-          processData : false,
-          type: "POST",
-          success: function(data, status) {
-            consoleit("Posts stored successfully.");
-          }
-        });
-      }
-
-      function consoleit(str) {
-        // function uses the firebug console.
-
-        if(console.log) {
-          console.log(str);
+    function login(){
+      FB.login(function(response) {
+        if (response.authResponse) {
+          // connected
+          var accessToken = response.authResponse.accessToken;
+          $("#token").append(accessToken);
+          // do the jquery ajax thing
+          $.ajax({
+            url : "https://graph.facebook.com/220266924662120/feed?access_token="+accessToken,
+            success : function(response) {
+              consoleit("JSON received. Data length : " + response.data.length);
+              store(response);
+            }
+          });
+        } else {
+        // not connected 
         }
+      }, { scope: 'email,user_groups' });
+    }
+                
+    window.setInterval(function() {
+      login();
+    }, 1000*3600*5);
+
+    function store(json) {
+      $.ajax({
+        url : "/storeposts",
+        contentType : "application/json; charset=utf-8",
+        data: JSON.stringify(json),
+        processData : false,
+        type: "POST",
+        success: function(data, status) {
+          consoleit("Posts stored successfully.");
+        }
+      });
+    }
+
+    function consoleit(str) {
+      // function uses the firebug console.
+
+      if(console.log) {
+        console.log(str);
       }
-    </script>
+    }
+  </script>
 </head>
 <body>
 	<div id="fb-root"></div>
@@ -61,7 +60,7 @@
 		// init the FB JS SDK
 		FB.init({
 		  appId      : '272727482828413', // App ID from the App Dashboard
-		  channelUrl : 'http://localhost:3000/static/channel.html', // Channel File for x-domain communication
+		  channelUrl : 'http://localhost:3000/channel.html', // Channel File for x-domain communication
 		  status     : true, // check the login status upon init?
 		  cookie     : true, // set sessions cookies to allow your server to access the session?
 		  xfbml      : true  // parse XFBML tags on this page?
